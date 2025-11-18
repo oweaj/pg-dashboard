@@ -5,10 +5,10 @@ import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import data from "./data.json";
-import { merchantDetailApi } from "@/lib/api/merchant";
+import { merchantListApi } from "@/lib/api/merchant";
 
 export default async function DashBoard() {
-  const res = await merchantDetailApi();
+  const res = await merchantListApi();
 
   console.log(res);
 

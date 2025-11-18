@@ -1,5 +1,7 @@
 import DashBoard from "./_components/Dashboard";
 
-export default function Home() {
+const Home = () => {
   return <DashBoard />;
-}
+};
+
+export default Home;
