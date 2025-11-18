@@ -1,4 +1,4 @@
-export interface IPaymentList {
+export interface IPaymentType {
   paymentCode: string;
   mchtCode: string;
   amount: string;
@@ -6,4 +6,10 @@ export interface IPaymentList {
   payType: string;
   status: string;
   paymentAt: string;
+}
+
+export interface IPaymentList {
+  data: IPaymentType[];
+  message: string;
+  status: number;
 }
