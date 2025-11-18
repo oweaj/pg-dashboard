@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { dateFormat } from "@/utils/dateFormet";
-import { IconSettings } from "@tabler/icons-react";
+import { IconUserCircle } from "@tabler/icons-react";
 
 export function SiteHeader() {
   const formatDate = dateFormat(new Date());
@@ -12,7 +12,7 @@ export function SiteHeader() {
       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-4" />
-        <h1 className="text-base font-medium">{formatDate}</h1>
+        <h1 className="text-sm font-medium">{formatDate}</h1>
         <div className="ml-auto flex items-center gap-2">
           <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
             <a
@@ -21,7 +21,7 @@ export function SiteHeader() {
               target="_blank"
               className="dark:text-foreground"
             >
-              <IconSettings />
+              <IconUserCircle className="size-5" />
             </a>
           </Button>
         </div>
