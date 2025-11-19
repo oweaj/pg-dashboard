@@ -1,8 +1,22 @@
+// 가맹점 목록 반환
+export interface IMerchantList {
+  data: IMerchantType[];
+  message: string;
+  status: number;
+}
+
 export interface IMerchantType {
   bizType: string;
   mchtCode: string;
   mchtName: string;
   status: string;
+}
+
+// 가맹점 상세 반환
+export interface IMerchantDetail {
+  data: IMerchantDetailType[];
+  message: string;
+  status: number;
 }
 
 export interface IMerchantDetailType {
@@ -18,14 +32,14 @@ export interface IMerchantDetailType {
   updatedAt: string;
 }
 
-export interface IMerchantList {
-  data: IMerchantType[];
-  message: string;
+// 공통 가맹점 상태 코드 반환
+export interface IMerchantCommon {
+  data: IMerchantCommonStatus[];
   status: number;
+  message: string;
 }
 
-export interface IMerchantDetail {
-  data: IMerchantDetailType[];
-  message: string;
-  status: number;
+export interface IMerchantCommonStatus {
+  code: string;
+  description: string;
 }

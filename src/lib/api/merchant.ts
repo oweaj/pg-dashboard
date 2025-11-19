@@ -17,3 +17,9 @@ export const merchantDetailCodeApi = async (mchtCode: string) => {
   const result = await cfetch(`/merchants/details/${mchtCode}`);
   return result;
 };
+
+// 가맹점 상태 코드
+export const mchtStatusApi = async () => {
+  const result = await cfetch("/common/mcht-status/all");
+  return result;
+};
