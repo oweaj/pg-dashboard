@@ -1,5 +1,11 @@
+import TablePayment from "./_components/TablePayment";
+
 const PaymentList = () => {
-  return <div>거래 내역</div>;
+  return (
+    <div className="py-6">
+      <TablePayment />
+    </div>
+  );
 };
 
 export default PaymentList;
