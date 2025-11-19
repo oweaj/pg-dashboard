@@ -1,8 +1,8 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMerchantList } from "@/hooks/useMerchant";
-import type { IPaymentType } from "@/types/payment.type";
+import type { IPaymentListType } from "@/types/payment.type";
 
-export function SectionCards({ data }: { data: IPaymentType[] }) {
+export function SectionCards({ data }: { data: IPaymentListType[] }) {
   const { data: merchantData } = useMerchantList();
 
   if (!merchantData) return null;
