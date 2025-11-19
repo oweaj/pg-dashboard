@@ -1,11 +1,11 @@
 // 거래 리스트 반환
 export interface IPaymentList {
-  data: IPaymentType[];
+  data: IPaymentListType[];
   message: string;
   status: number;
 }
 
-export interface IPaymentType {
+export interface IPaymentListType {
   paymentCode: string;
   mchtCode: string;
   amount: string;

@@ -1,11 +1,11 @@
 // 가맹점 목록 반환
 export interface IMerchantList {
-  data: IMerchantType[];
+  data: IMerchantListType[];
   message: string;
   status: number;
 }
 
-export interface IMerchantType {
+export interface IMerchantListType {
   bizType: string;
   mchtCode: string;
   mchtName: string;
