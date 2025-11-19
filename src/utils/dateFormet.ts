@@ -1,9 +1,17 @@
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 
-export const dateFormat = (date: Date | string, option: { day: boolean }) => {
+interface IDateFormatOption {
+  day?: boolean;
+  time?: boolean;
+}
+
+export const dateFormat = (date: Date | string, option?: IDateFormatOption) => {
   if (typeof date === "string") new Date(date);
-  const formatDate = option.day ? "yyyy.MM.dd EEEE" : "yyyy.MM.dd";
+
+  let formatDate = "yyyy.MM.dd ";
+  if (option?.day) formatDate += "EEEE";
+  else if (option?.time) formatDate += "/ a hh:mm";
 
   return format(date, formatDate, { locale: ko });
 };
