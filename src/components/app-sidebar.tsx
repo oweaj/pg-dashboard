@@ -1,21 +1,7 @@
 "use client";
 
 import type * as React from "react";
-import {
-  IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconInnerShadowTop,
-  IconListDetails,
-  IconReport,
-} from "@tabler/icons-react";
-
-import { NavDocuments } from "@/components/nav-documents";
+import { IconDashboard, IconFolder, IconInnerShadowTop, IconListDetails, IconSettings } from "@tabler/icons-react";
 import { NavMain } from "@/components/nav-main";
 import {
   Sidebar,
@@ -30,89 +16,23 @@ const data = {
   navMain: [
     {
       title: "홈",
-      url: "#",
+      url: "/",
       icon: IconDashboard,
     },
     {
       title: "거래내역",
-      url: "#",
+      url: "/payment",
       icon: IconListDetails,
     },
     {
       title: "가맹점 리스트",
-      url: "#",
+      url: "merchant",
       icon: IconFolder,
     },
     {
-      title: "Projects",
+      title: "설정",
       url: "#",
-      icon: IconChartBar,
-    },
-  ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: IconCamera,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: IconFileDescription,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: IconFileAi,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-  ],
-
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: IconDatabase,
-    },
-    {
-      name: "Reports",
-      url: "#",
-      icon: IconReport,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: IconFileWord,
+      icon: IconSettings,
     },
   ],
 };
@@ -125,7 +45,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="/">
-                <IconInnerShadowTop className="!size-5" />
+                <IconInnerShadowTop className="size-5" />
                 <span className="text-base font-semibold">DASHBOARD</span>
               </a>
             </SidebarMenuButton>
@@ -134,7 +54,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
       </SidebarContent>
     </Sidebar>
   );
