@@ -1,23 +1,15 @@
 "use client";
 
-import * as React from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   IconChevronLeft,
   IconChevronRight,
   IconChevronsLeft,
   IconChevronsRight,
-  IconCircleCheckFilled,
-  IconLoader,
   IconPlus,
-  IconCircleXFilled,
-  IconExclamationCircleFilled,
-  IconArrowsSort,
-  IconArrowNarrowDown,
-  IconArrowNarrowUp,
   IconSearch,
 } from "@tabler/icons-react";
 import {
-  type Column,
   type ColumnDef,
   type ColumnFiltersState,
   type SortingState,
@@ -28,166 +20,37 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import type { IPaymentType } from "@/types/payment.type";
-import { dateFormat } from "@/utils/dateFormet";
-import { usePaymentStatus, usePaymentType } from "@/hooks/usePayment";
-import { useMerchantList } from "@/hooks/useMerchant";
+import type { IPaymentCommon } from "@/types/payment.type";
+import { usePaymentStatus } from "@/hooks/usePayment";
 import FilterSelect from "./data-select";
 import { Input } from "./ui/input";
 
-export function DataTable({ data }: { data: IPaymentType[] }) {
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
-  const [globalFilter, setGlobalFilter] = React.useState("");
-  const [searchInput, setSearchInput] = React.useState("");
-  const tableTopRef = React.useRef<HTMLDivElement>(null);
-  const { data: paymentType } = usePaymentType();
+interface ITableDataProps<T> {
+  columns: ColumnDef<T>[];
+  data: T[];
+  optionData?: IPaymentCommon;
+}
+
+const DataTable = <T,>({ columns, data, optionData }: ITableDataProps<T>) => {
+  const [rowSelection, setRowSelection] = useState({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const tableTopRef = useRef<HTMLDivElement>(null);
   const { data: paymentStatus } = usePaymentStatus();
-  const { data: merchantList } = useMerchantList();
-
-  // 테이블 데이터 열
-  const columns = React.useMemo<ColumnDef<IPaymentType>[]>(() => {
-    if (!merchantList || !paymentType) return [];
-
-    return [
-      {
-        id: "select",
-        header: ({ table }) => (
-          <Checkbox
-            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all"
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox checked={row.getIsSelected()} onCheckedChange={(val) => row.toggleSelected(!!val)} />
-        ),
-        enableSorting: false,
-      },
-      {
-        accessorKey: "status",
-        header: "상태",
-        enableColumnFilter: true,
-        cell: ({ row }) => {
-          const statusMap: Record<string, { icon: React.JSX.Element; description: string }> = {
-            SUCCESS: {
-              icon: <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />,
-              description: "결제완료",
-            },
-            FAILED: {
-              icon: <IconCircleXFilled className=" fill-red-500 dark:fill-red-400" />,
-              description: "결제실패",
-            },
-            CANCELLED: {
-              icon: <IconExclamationCircleFilled className=" fill-yellow-500 dark:fill-yellow-400" />,
-              description: "환불완료",
-            },
-
-            PENDING: {
-              icon: <IconLoader />,
-              description: "결제대기",
-            },
-          };
-
-          return (
-            <Badge variant="outline" className="text-muted-foreground">
-              {statusMap[row.original.status].icon || <IconLoader />}
-              {statusMap[row.original.status].description || "알수없음"}
-            </Badge>
-          );
-        },
-      },
-      {
-        id: "mchtName",
-        header: "가맹점명",
-        enableGlobalFilter: true,
-        accessorFn: (row) => {
-          const merchant = merchantList?.data.find((m) => m.mchtCode === row.mchtCode);
-          return merchant?.mchtName ?? "알수없는 가맹점";
-        },
-        cell: ({ getValue }) => {
-          return (
-            <Button variant="link" className="text-foreground w-fit px-0 text-left">
-              {getValue<string>()}
-            </Button>
-          );
-        },
-      },
-      {
-        accessorKey: "payType",
-        header: "결제수단",
-        enableColumnFilter: true,
-        cell: ({ row }) => {
-          const typeFind = paymentType?.data.find((pay) => pay.type === row.original.payType);
-          return (
-            <>
-              <Label htmlFor={row.original.payType} className="sr-only">
-                결제수단
-              </Label>
-              <span>{typeFind?.description}</span>
-            </>
-          );
-        },
-      },
-      {
-        accessorKey: "amount",
-        header: ({ column }) => (
-          <div className="flex items-center gap-1">
-            결제금액
-            <TableSortButton column={column} />
-          </div>
-        ),
-        cell: ({ row }) => {
-          const amountNumber = Number(row.original.amount);
-          return (
-            <>
-              <Label htmlFor={row.original.amount} className="sr-only">
-                결제금액
-              </Label>
-              <span>{amountNumber.toLocaleString()}원</span>
-            </>
-          );
-        },
-        enableSorting: true,
-      },
-      {
-        accessorKey: "paymentAt",
-        header: ({ column }) => (
-          <div className="flex items-center gap-1">
-            결제일자
-            <TableSortButton column={column} />
-          </div>
-        ),
-        cell: ({ row }) => {
-          const formatDate = dateFormat(row.original.paymentAt, { day: false });
-          return (
-            <>
-              <Label htmlFor={row.original.paymentAt} className="sr-only">
-                결제일자
-              </Label>
-              <span>{formatDate}</span>
-            </>
-          );
-        },
-        enableSorting: true,
-      },
-    ];
-  }, [paymentType, merchantList]);
 
   const table = useReactTable({
     data,
     columns,
     state: { sorting, rowSelection, columnFilters, pagination, globalFilter },
-    getRowId: (row) => row.paymentCode,
+    getRowId: (_, index) => index.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -200,12 +63,12 @@ export function DataTable({ data }: { data: IPaymentType[] }) {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  const paymentTypeAll = React.useMemo(
-    () => [{ type: "ALL", description: "전체" }, ...(paymentType?.data ?? [])],
-    [paymentType]
+  const paymentTypeAll = useMemo(
+    () => [{ type: "ALL", description: "전체" }, ...(optionData?.data ?? [])],
+    [optionData]
   );
 
-  const paymentStatusAll = React.useMemo(
+  const paymentStatusAll = useMemo(
     () => [{ code: "ALL", description: "전체" }, ...(paymentStatus?.data ?? [])],
     [paymentStatus]
   );
@@ -262,7 +125,7 @@ export function DataTable({ data }: { data: IPaymentType[] }) {
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
             <IconPlus />
             <span className="hidden lg:inline">거래내역 추가</span>
           </Button>
@@ -404,31 +267,6 @@ export function DataTable({ data }: { data: IPaymentType[] }) {
       </TabsContent>
     </Tabs>
   );
-}
-
-interface SortButtonProps<TData, TValue> {
-  column: Column<TData, TValue>;
-}
-
-// 테이블 금액/일자 정렬
-const TableSortButton = <TData, TValue>({ column }: SortButtonProps<TData, TValue>) => {
-  const sorted = column.getIsSorted();
-
-  const handleSort = () => {
-    if (!sorted) {
-      column.toggleSorting(false);
-    } else if (sorted === "asc") {
-      column.toggleSorting(true);
-    } else {
-      column.clearSorting();
-    }
-  };
-
-  return (
-    <Button variant="ghost" size="icon-sm" className="w-6 h-6 hover:border-2" onClick={handleSort}>
-      {sorted === "asc" && <IconArrowNarrowUp className="w-3.5 h-3.5 text-gray-500" />}
-      {sorted === "desc" && <IconArrowNarrowDown className="w-3.5 h-3.5 text-gray-500" />}
-      {!sorted && <IconArrowsSort className="w-3.5 h-3.5 text-gray-500" />}
-    </Button>
-  );
 };
+
+export default DataTable;
