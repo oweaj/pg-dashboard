@@ -1,8 +1,8 @@
 import { format, getDaysInMonth } from "date-fns";
 import { ko } from "date-fns/locale";
-import type { IPaymentType } from "@/types/payment.type";
+import type { IPaymentListType } from "@/types/payment.type";
 
-const chartDataFilter = (data: IPaymentType[], type: string) => {
+const chartDataFilter = (data: IPaymentListType[], type: string) => {
   const today = new Date();
   let labels: string[] = [];
 
@@ -26,7 +26,7 @@ const chartDataFilter = (data: IPaymentType[], type: string) => {
       label = labels[date.getDay()];
     } else if (type === "month") {
       const day = date.getDate();
-      const step = Math.ceil(getDaysInMonth(today) / 10);
+      const step = 3;
       const index = Math.min(Math.floor((day - 1) / step), labels.length - 1);
       label = labels[index];
     } else if (type === "year") {
