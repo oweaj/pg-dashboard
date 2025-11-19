@@ -1,8 +1,8 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import type { IPaymentDataType } from "./chart-area-interactive";
 import { useMerchantList } from "@/hooks/useMerchant";
+import type { IPaymentType } from "@/types/payment.type";
 
-export function SectionCards({ data }: IPaymentDataType) {
+export function SectionCards({ data }: { data: IPaymentType[] }) {
   const { data: merchantData } = useMerchantList();
 
   if (!merchantData) return null;

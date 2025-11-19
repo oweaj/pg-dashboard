@@ -5,7 +5,7 @@ import { dateFormat } from "@/utils/dateFormet";
 import { IconUserCircle } from "@tabler/icons-react";
 
 export function SiteHeader() {
-  const formatDate = dateFormat(new Date());
+  const formatDate = dateFormat(new Date(), { day: true });
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
