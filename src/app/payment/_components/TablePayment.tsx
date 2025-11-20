@@ -95,18 +95,31 @@ const TablePayment = () => {
         enableSorting: true,
       },
       {
-        accessorKey: "paymentAt",
+        id: "date",
         header: ({ column }) => (
           <div className="flex items-center gap-1">
             결제일자
             <TableSortButton column={column} />
           </div>
         ),
+        accessorFn: (row) => (row.paymentAt ? new Date(row.paymentAt) : undefined),
+        filterFn: (row, columnId, filterValue) => {
+          const { start, end } = filterValue as { start: Date; end: Date };
+          const rowDate = row.getValue<Date>(columnId);
+          if (!rowDate) return false;
+
+          const resetDate = new Date(rowDate.setHours(0, 0, 0, 0));
+          const startDate = new Date(start.setHours(0, 0, 0, 0));
+          const endDate = new Date(end.setHours(23, 59, 59, 999));
+
+          return resetDate >= startDate && resetDate <= endDate;
+        },
         cell: ({ row }) => {
           const formatDate = dateFormat(row.original.paymentAt, { day: false });
           return <span>{formatDate}</span>;
         },
         enableSorting: true,
+        enableColumnFilter: true,
       },
     ],
     [paymentType, merchantList]

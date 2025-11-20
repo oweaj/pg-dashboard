@@ -70,14 +70,14 @@ const TableMerchant = () => {
       },
       {
         accessorKey: "bizType",
-        header: "가맹분류",
+        header: "유형",
         enableColumnFilter: true,
         cell: ({ row }) => {
           return <span>{row.original.bizType}</span>;
         },
       },
       {
-        id: "registeredAt",
+        id: "date",
         header: ({ column }) => (
           <div className="flex items-center gap-1">
             등록일자
@@ -86,7 +86,18 @@ const TableMerchant = () => {
         ),
         accessorFn: (row) => {
           const mchtDetail = merchantDetail?.data.find((mcht) => mcht.mchtCode === row.mchtCode);
-          return mchtDetail?.registeredAt;
+          return mchtDetail?.registeredAt ? new Date(mchtDetail.registeredAt) : undefined;
+        },
+        filterFn: (row, columnId, filterValue) => {
+          const { start, end } = filterValue as { start: Date; end: Date };
+          const rowDate = row.getValue<Date>(columnId);
+          if (!rowDate) return false;
+
+          const resetDate = new Date(rowDate.setHours(0, 0, 0, 0));
+          const startDate = new Date(start.setHours(0, 0, 0, 0));
+          const endDate = new Date(end.setHours(23, 59, 59, 999));
+
+          return resetDate >= startDate && resetDate <= endDate;
         },
         cell: ({ getValue }) => {
           const mchtRegisterDate = getValue<string>();
@@ -94,16 +105,17 @@ const TableMerchant = () => {
           return <span>{formatDate}</span>;
         },
         enableSorting: true,
+        enableColumnFilter: true,
       },
     ],
     [merchantList, merchantDetail]
   );
 
-  const onlyMerchantType = [...new Set(merchantList?.data.map((mcht) => mcht.bizType))];
   const merchantStatusAll = useFilterAddAll(merchantStatus?.data, (data) => ({
     value: data.code,
     label: data.description,
   }));
+  const onlyMerchantType = [...new Set(merchantList?.data.map((mcht) => mcht.bizType))];
   const merchantTypeAll = useFilterAddAll(onlyMerchantType, (data) => ({ value: data, label: data }));
 
   if (!merchantList || !merchantDetail || !merchantStatus) return null;
