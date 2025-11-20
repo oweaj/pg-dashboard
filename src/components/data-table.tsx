@@ -9,6 +9,7 @@ import {
   IconPlus,
   IconSearch,
   IconDownload,
+  IconTrash,
 } from "@tabler/icons-react";
 import {
   type ColumnDef,
@@ -71,7 +72,7 @@ const DataTable = <T,>({ columns, data, filterStatus, filterType, page }: ITable
 
   return (
     <Tabs defaultValue="outline" className="w-full flex-col justify-start gap-6">
-      <div ref={tableTopRef} className="flex items-center justify-between">
+      <div ref={tableTopRef} className="flex items-baseline-last justify-between">
         <Label htmlFor="view-selector" className="sr-only">
           View
         </Label>
@@ -107,7 +108,7 @@ const DataTable = <T,>({ columns, data, filterStatus, filterType, page }: ITable
             placeholder={TABLE_FILTER_LABEL[page].phType}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex items-baseline-last gap-2">
           <div className="flex items-center border rounded-md px-2">
             <IconSearch className="w-4.5 h-4.5 cursor-pointer" onClick={handleSearch} />
             <Input
@@ -119,13 +120,21 @@ const DataTable = <T,>({ columns, data, filterStatus, filterType, page }: ITable
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
           </div>
-          <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
-            <IconDownload />
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
-            <IconPlus />
-            <span className="hidden lg:inline">{TABLE_FILTER_LABEL[page].addBtn}</span>
-          </Button>
+
+          <div className="flex flex-col gap-2 items-baseline-last">
+            <div className="w-full flex gap-3 justify-end">
+              <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
+                <IconTrash />
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
+                <IconDownload />
+              </Button>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
+              <IconPlus />
+              <span className="hidden lg:inline">{TABLE_FILTER_LABEL[page].addBtn}</span>
+            </Button>
+          </div>
         </div>
       </div>
       <TabsContent value="outline" className="relative flex flex-col gap-4 overflow-auto">

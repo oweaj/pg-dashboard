@@ -29,7 +29,7 @@ export function ChartAreaInteractive({ data }: { data: IPaymentListType[] }) {
   } satisfies ChartConfig;
 
   return (
-    <Card>
+    <Card className="md:col-span-2 col-span-1">
       <CardHeader>
         <CardTitle>총 거래액 차트</CardTitle>
         <CardAction>
@@ -63,19 +63,34 @@ export function ChartAreaInteractive({ data }: { data: IPaymentListType[] }) {
         </CardAction>
       </CardHeader>
       <CardContent className="p-4">
-        <ChartContainer config={chartConfig} className="h-[300px] w-full p-4">
-          <LineChart accessibilityLayer data={chartData} margin={{ top: 12, right: 12, bottom: 12, left: 24 }}>
+        <ChartContainer config={chartConfig} className="max-h-[350px] w-full px-2">
+          <LineChart accessibilityLayer data={chartData} margin={{ top: 20, right: 12, left: 12 }}>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} />
             <YAxis
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
+              tickMargin={12}
               tickCount={4}
-              tickFormatter={(value) => (value === 0 ? "" : `${Number(value).toLocaleString()}원`)}
+              tickFormatter={(value) => {
+                if (value === 0) return "";
+                if (value < 10_000) {
+                  return `${Number(value).toLocaleString()}원`;
+                }
+                return `${Math.floor(value / 10_000)}만 원`;
+              }}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Line dataKey="total" type="linear" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
+            <Line
+              dataKey="total"
+              type="linear"
+              stroke="var(--color-desktop)"
+              strokeWidth={2}
+              dot={{
+                fill: "var(--color-desktop)",
+              }}
+              activeDot={{ r: 6 }}
+            />
           </LineChart>
         </ChartContainer>
       </CardContent>
