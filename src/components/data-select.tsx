@@ -1,14 +1,13 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import type { IOptionType } from "@/hooks/useFilterAddAll";
 
-interface IFilterSelectProps<TItem> {
+interface IFilterSelectProps {
   onChange: (value: string) => void;
-  items: TItem[];
+  items: IOptionType[];
   placeholder: string;
-  getValue: (item: TItem) => string;
-  getLabel: (item: TItem) => string;
 }
 
-const FilterSelect = <TItem,>({ items, placeholder, onChange, getValue, getLabel }: IFilterSelectProps<TItem>) => {
+const FilterSelect = ({ items, placeholder, onChange }: IFilterSelectProps) => {
   return (
     <Select onValueChange={onChange}>
       <SelectTrigger size="sm">
@@ -16,8 +15,8 @@ const FilterSelect = <TItem,>({ items, placeholder, onChange, getValue, getLabel
       </SelectTrigger>
       <SelectContent>
         {items.map((item) => (
-          <SelectItem key={getValue(item)} value={getValue(item)}>
-            {getLabel(item)}
+          <SelectItem key={item.value} value={item.value}>
+            {item.label}
           </SelectItem>
         ))}
       </SelectContent>

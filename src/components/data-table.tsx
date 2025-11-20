@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -8,6 +8,7 @@ import {
   IconChevronsRight,
   IconPlus,
   IconSearch,
+  IconDownload,
 } from "@tabler/icons-react";
 import {
   type ColumnDef,
@@ -25,18 +26,20 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import type { IPaymentCommon } from "@/types/payment.type";
-import { usePaymentStatus } from "@/hooks/usePayment";
 import FilterSelect from "./data-select";
 import { Input } from "./ui/input";
+import type { IOptionType } from "@/hooks/useFilterAddAll";
+import { TABLE_FILTER_LABEL } from "@/constants/tableFilterLabel";
 
 interface ITableDataProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
-  optionData?: IPaymentCommon;
+  filterStatus: IOptionType[];
+  filterType: IOptionType[];
+  page: keyof typeof TABLE_FILTER_LABEL;
 }
 
-const DataTable = <T,>({ columns, data, optionData }: ITableDataProps<T>) => {
+const DataTable = <T,>({ columns, data, filterStatus, filterType, page }: ITableDataProps<T>) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -44,7 +47,6 @@ const DataTable = <T,>({ columns, data, optionData }: ITableDataProps<T>) => {
   const [globalFilter, setGlobalFilter] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const tableTopRef = useRef<HTMLDivElement>(null);
-  const { data: paymentStatus } = usePaymentStatus();
 
   const table = useReactTable({
     data,
@@ -63,16 +65,6 @@ const DataTable = <T,>({ columns, data, optionData }: ITableDataProps<T>) => {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  const paymentTypeAll = useMemo(
-    () => [{ type: "ALL", description: "전체" }, ...(optionData?.data ?? [])],
-    [optionData]
-  );
-
-  const paymentStatusAll = useMemo(
-    () => [{ code: "ALL", description: "전체" }, ...(paymentStatus?.data ?? [])],
-    [paymentStatus]
-  );
-
   const handleSearch = () => {
     setGlobalFilter(searchInput);
   };
@@ -88,29 +80,31 @@ const DataTable = <T,>({ columns, data, optionData }: ITableDataProps<T>) => {
             onChange={(value: string) =>
               setColumnFilters((prev) => {
                 if (value === "ALL") {
-                  return prev.filter((select) => select.id !== "status");
+                  return prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].status);
                 }
-                return [...prev.filter((select) => select.id !== "status"), { id: "status", value }];
+                return [
+                  ...prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].status),
+                  { id: TABLE_FILTER_LABEL[page].status, value },
+                ];
               })
             }
-            items={paymentStatusAll}
-            placeholder="상태"
-            getValue={(item) => item.code}
-            getLabel={(item) => item.description}
+            items={filterStatus}
+            placeholder={TABLE_FILTER_LABEL[page].phStatus}
           />
           <FilterSelect
             onChange={(value: string) =>
               setColumnFilters((prev) => {
                 if (value === "ALL") {
-                  return prev.filter((select) => select.id !== "payType");
+                  return prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].typeId);
                 }
-                return [...prev.filter((select) => select.id !== "payType"), { id: "payType", value }];
+                return [
+                  ...prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].typeId),
+                  { id: TABLE_FILTER_LABEL[page].typeId, value },
+                ];
               })
             }
-            items={paymentTypeAll}
-            placeholder="결제수단"
-            getValue={(item) => item.type}
-            getLabel={(item) => item.description}
+            items={filterType}
+            placeholder={TABLE_FILTER_LABEL[page].phType}
           />
         </div>
         <div className="flex gap-2">
@@ -126,8 +120,11 @@ const DataTable = <T,>({ columns, data, optionData }: ITableDataProps<T>) => {
             />
           </div>
           <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
+            <IconDownload />
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
             <IconPlus />
-            <span className="hidden lg:inline">거래내역 추가</span>
+            <span className="hidden lg:inline">{TABLE_FILTER_LABEL[page].addBtn}</span>
           </Button>
         </div>
       </div>

@@ -2,29 +2,26 @@
 
 import { useMemo, useState } from "react";
 import DataTable from "@/components/data-table";
-import { useMerchantDetail, useMerchantList } from "@/hooks/useMerchant";
-import { usePaymentList, usePaymentStatus, usePaymentType } from "@/hooks/usePayment";
-import type { IPaymentListType } from "@/types/payment.type";
-import type { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useMerchantDetail, useMerchantList, useMerchantStatus } from "@/hooks/useMerchant";
+import type { ColumnDef } from "@tanstack/react-table";
+import TableStatusBadge from "@/app/payment/_components/TableStatusBadge";
+import { Button } from "@/components/ui/button";
 import { dateFormat } from "@/utils/dateFormet";
-import TableSortButton from "./TableSortButton";
-import TableStatusBadge from "./TableStatusBadge";
+import type { IMerchantListType } from "@/types/merchant.type";
+import TableSortButton from "@/app/payment/_components/TableSortButton";
 import TableModal from "@/components/modal-table";
 import MerchantDetail from "@/app/_components/MerchantDetail";
 import { useFilterAddAll } from "@/hooks/useFilterAddAll";
 
-const TablePayment = () => {
-  const { data: paymentList } = usePaymentList();
-  const { data: paymentType } = usePaymentType();
-  const { data: paymentStatus } = usePaymentStatus();
+const TableMerchant = () => {
   const { data: merchantList } = useMerchantList();
   const { data: merchantDetail } = useMerchantDetail();
+  const { data: merchantStatus } = useMerchantStatus();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedMerchant, setSelectedMerchant] = useState("");
 
-  const columns = useMemo<ColumnDef<IPaymentListType>[]>(
+  const columns = useMemo<ColumnDef<IMerchantListType>[]>(
     () => [
       {
         id: "select",
@@ -71,66 +68,57 @@ const TablePayment = () => {
         },
       },
       {
-        accessorKey: "payType",
-        header: "결제수단",
+        accessorKey: "bizType",
+        header: "가맹분류",
         enableColumnFilter: true,
         cell: ({ row }) => {
-          const typeFind = paymentType?.data.find((pay) => pay.type === row.original.payType);
-          return <span>{typeFind?.description}</span>;
+          return <span>{row.original.bizType}</span>;
         },
       },
       {
-        accessorKey: "amount",
+        id: "registeredAt",
         header: ({ column }) => (
           <div className="flex items-center gap-1">
-            결제금액
+            등록일자
             <TableSortButton column={column} />
           </div>
         ),
-        cell: ({ row }) => {
-          const amountNumber = Number(row.original.amount);
-          return <span>{amountNumber.toLocaleString()}원</span>;
+        accessorFn: (row) => {
+          const mchtDetail = merchantDetail?.data.find((mcht) => mcht.mchtCode === row.mchtCode);
+          return mchtDetail?.registeredAt;
         },
-        enableSorting: true,
-      },
-      {
-        accessorKey: "paymentAt",
-        header: ({ column }) => (
-          <div className="flex items-center gap-1">
-            결제일자
-            <TableSortButton column={column} />
-          </div>
-        ),
-        cell: ({ row }) => {
-          const formatDate = dateFormat(row.original.paymentAt, { day: false });
+        cell: ({ getValue }) => {
+          const mchtRegisterDate = getValue<string>();
+          const formatDate = dateFormat(mchtRegisterDate, { day: false });
           return <span>{formatDate}</span>;
         },
         enableSorting: true,
       },
     ],
-    [paymentType, merchantList]
+    [merchantList, merchantDetail]
   );
 
-  const paymentStatusAll = useFilterAddAll(paymentStatus?.data, (data) => ({
+  const onlyMerchantType = [...new Set(merchantList?.data.map((mcht) => mcht.bizType))];
+  const merchantStatusAll = useFilterAddAll(merchantStatus?.data, (data) => ({
     value: data.code,
     label: data.description,
   }));
-  const paymentTypeAll = useFilterAddAll(paymentType?.data, (data) => ({ value: data.type, label: data.description }));
+  const merchantTypeAll = useFilterAddAll(onlyMerchantType, (data) => ({ value: data, label: data }));
 
-  if (!paymentList || !paymentType || !paymentStatus || !merchantList || !merchantDetail) return null;
+  if (!merchantList || !merchantDetail || !merchantStatus) return null;
 
   return (
     <div className="px-4 lg:px-6">
       <div className="flex items-end gap-3 text-xl font-semibold mb-4">
-        <h2>전체 거래내역</h2>
-        <span className="text-base text-gray-600">총 {paymentList.data.length ?? 0}건</span>
+        <h2>전체 가맹점 목록</h2>
+        <span className="text-base text-gray-600">총 {merchantList.data.length ?? 0}개</span>
       </div>
       <DataTable
         columns={columns}
-        data={paymentList.data}
-        filterStatus={paymentStatusAll}
-        filterType={paymentTypeAll}
-        page="payment"
+        data={merchantList.data}
+        filterStatus={merchantStatusAll}
+        filterType={merchantTypeAll}
+        page="merchant"
       />
       <TableModal
         open={modalOpen}
@@ -145,4 +133,4 @@ const TablePayment = () => {
   );
 };
 
-export default TablePayment;
+export default TableMerchant;

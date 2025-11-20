@@ -1,5 +1,11 @@
+import TableMerchant from "./_components/TableMerchant";
+
 const MerchantList = () => {
-  return <div>가맹점 리스트</div>;
+  return (
+    <div className="py-6">
+      <TableMerchant />
+    </div>
+  );
 };
 
 export default MerchantList;

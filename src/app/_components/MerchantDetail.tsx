@@ -1,20 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useMerchantDetail } from "@/hooks/useMerchant";
 import { dateFormat } from "@/utils/dateFormet";
 import TableStatusBadge from "../payment/_components/TableStatusBadge";
 import type { ReactNode } from "react";
+import type { IMerchantDetailType } from "@/types/merchant.type";
 
 const MerchantDetail = ({
   mchtSelect,
+  data,
   setModalOpen,
 }: {
   mchtSelect: string;
+  data: IMerchantDetailType[];
   setModalOpen: (modalOpen: boolean) => void;
 }) => {
-  const { data: merchantDetail } = useMerchantDetail();
-  const mchtDetail = merchantDetail?.data.find((mcht) => mcht.mchtCode === mchtSelect);
+  const mchtDetail = data?.find((mcht) => mcht.mchtCode === mchtSelect);
 
   if (!mchtDetail) return null;
 
@@ -59,17 +60,18 @@ const MerchantDetail = ({
           </div>
         </section>
       </div>
-      <div className="flex justify-end gap-4">
-        <Button
-          size="lg"
-          className="bg-blue-600 hover:bg-blue-700 transition-colors"
-          onClick={() => alert("준비중 입니다.")}
-        >
-          수정
+      <div className="flex justify-between">
+        <Button size="lg" onClick={() => alert("준비중 입니다.")}>
+          승인
         </Button>
-        <Button type="button" variant="outline" size="lg" onClick={() => setModalOpen(false)}>
-          닫기
-        </Button>
+        <div className="flex gap-4">
+          <Button size="lg" onClick={() => alert("준비중 입니다.")}>
+            수정
+          </Button>
+          <Button variant="outline" size="lg" onClick={() => setModalOpen(false)}>
+            닫기
+          </Button>
+        </div>
       </div>
     </div>
   );
