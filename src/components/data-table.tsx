@@ -31,6 +31,7 @@ import FilterSelect from "./data-select";
 import { Input } from "./ui/input";
 import type { IOptionType } from "@/hooks/useFilterAddAll";
 import { TABLE_FILTER_LABEL } from "@/constants/tableFilterLabel";
+import { DataCalendar } from "./data-calendar";
 
 interface ITableDataProps<T> {
   columns: ColumnDef<T>[];
@@ -71,69 +72,68 @@ const DataTable = <T,>({ columns, data, filterStatus, filterType, page }: ITable
   };
 
   return (
-    <Tabs defaultValue="outline" className="w-full flex-col justify-start gap-6">
-      <div ref={tableTopRef} className="flex items-baseline-last justify-between">
+    <Tabs defaultValue="outline" className="w-full flex-col justify-start gap-6 mt-6 lg:mt-0">
+      <div ref={tableTopRef} className="flex justify-between gap-2 items-baseline-last">
         <Label htmlFor="view-selector" className="sr-only">
           View
         </Label>
-        <div className="flex gap-2">
-          <FilterSelect
-            onChange={(value: string) =>
-              setColumnFilters((prev) => {
-                if (value === "ALL") {
-                  return prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].status);
-                }
-                return [
-                  ...prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].status),
-                  { id: TABLE_FILTER_LABEL[page].status, value },
-                ];
-              })
-            }
-            items={filterStatus}
-            placeholder={TABLE_FILTER_LABEL[page].phStatus}
-          />
-          <FilterSelect
-            onChange={(value: string) =>
-              setColumnFilters((prev) => {
-                if (value === "ALL") {
-                  return prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].typeId);
-                }
-                return [
-                  ...prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].typeId),
-                  { id: TABLE_FILTER_LABEL[page].typeId, value },
-                ];
-              })
-            }
-            items={filterType}
-            placeholder={TABLE_FILTER_LABEL[page].phType}
-          />
+        <div className="flex flex-col md:flex-row gap-2">
+          <div className="flex gap-2">
+            <FilterSelect
+              onChange={(value: string) =>
+                setColumnFilters((prev) => {
+                  if (value === "ALL") {
+                    return prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].status);
+                  }
+                  return [
+                    ...prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].status),
+                    { id: TABLE_FILTER_LABEL[page].status, value },
+                  ];
+                })
+              }
+              items={filterStatus}
+              placeholder={TABLE_FILTER_LABEL[page].phStatus}
+            />
+            <FilterSelect
+              onChange={(value: string) =>
+                setColumnFilters((prev) => {
+                  if (value === "ALL") {
+                    return prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].typeId);
+                  }
+                  return [
+                    ...prev.filter((select) => select.id !== TABLE_FILTER_LABEL[page].typeId),
+                    { id: TABLE_FILTER_LABEL[page].typeId, value },
+                  ];
+                })
+              }
+              items={filterType}
+              placeholder={TABLE_FILTER_LABEL[page].phType}
+            />
+          </div>
+          <DataCalendar setColumnFilters={setColumnFilters} />
         </div>
-        <div className="flex items-baseline-last gap-2">
+        <div className="flex flex-col items-center justify-center gap-3">
+          <div className="w-full flex justify-end gap-3">
+            <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
+              <IconPlus />
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
+              <IconDownload />
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
+              <IconTrash />
+            </Button>
+          </div>
           <div className="flex items-center border rounded-md px-2">
-            <IconSearch className="w-4.5 h-4.5 cursor-pointer" onClick={handleSearch} />
+            <IconSearch className="w-4 h-4 cursor-pointer" onClick={handleSearch} />
             <Input
               type="text"
-              className="h-8 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="w-48 h-8 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
               placeholder="가맹점을 검색해주세요."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
-          </div>
-
-          <div className="flex flex-col gap-2 items-baseline-last">
-            <div className="w-full flex gap-3 justify-end">
-              <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
-                <IconTrash />
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
-                <IconDownload />
-              </Button>
-            </div>
-            <Button variant="outline" size="sm" onClick={() => alert("준비중 입니다.")}>
-              <IconPlus />
-              <span className="hidden lg:inline">{TABLE_FILTER_LABEL[page].addBtn}</span>
-            </Button>
           </div>
         </div>
       </div>

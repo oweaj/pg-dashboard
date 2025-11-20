@@ -10,7 +10,7 @@ interface IFilterSelectProps {
 const FilterSelect = ({ items, placeholder, onChange }: IFilterSelectProps) => {
   return (
     <Select onValueChange={onChange}>
-      <SelectTrigger size="sm">
+      <SelectTrigger size="sm" className="cursor-pointer">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
