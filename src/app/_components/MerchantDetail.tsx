@@ -42,7 +42,7 @@ const MerchantDetail = ({
           <h3 className="mb-4 pb-2 border-b font-semibold ">사업자 정보</h3>
           <div className="space-y-3">
             <Field label="사업자 번호" value={mchtDetail.bizNo} />
-            <Field label="사업자 유형" value={mchtDetail.bizType} />
+            <Field label="분류" value={mchtDetail.bizType} />
             <Field label="주소" value={mchtDetail.address} />
           </div>
         </section>
