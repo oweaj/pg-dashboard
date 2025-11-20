@@ -1,7 +1,7 @@
 "use client";
 
 import type * as React from "react";
-import { IconDashboard, IconFolder, IconInnerShadowTop, IconListDetails, IconSettings } from "@tabler/icons-react";
+import { IconDashboard, IconFolder, IconInnerShadowTop, IconListDetails } from "@tabler/icons-react";
 import { NavMain } from "@/components/nav-main";
 import {
   Sidebar,
@@ -28,11 +28,6 @@ const data = {
       title: "가맹점 리스트",
       url: "merchant",
       icon: IconFolder,
-    },
-    {
-      title: "설정",
-      url: "#",
-      icon: IconSettings,
     },
   ],
 };
