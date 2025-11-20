@@ -29,7 +29,7 @@ export function ChartAreaInteractive({ data }: { data: IPaymentListType[] }) {
   } satisfies ChartConfig;
 
   return (
-    <Card className="md:col-span-2 col-span-1">
+    <Card className="flex-2">
       <CardHeader>
         <CardTitle>총 거래액 차트</CardTitle>
         <CardAction>
@@ -63,7 +63,7 @@ export function ChartAreaInteractive({ data }: { data: IPaymentListType[] }) {
         </CardAction>
       </CardHeader>
       <CardContent className="p-4">
-        <ChartContainer config={chartConfig} className="max-h-[350px] w-full px-2">
+        <ChartContainer config={chartConfig} className="w-full mx-auto aspect-3/4 max-h-[350px] px-2">
           <LineChart accessibilityLayer data={chartData} margin={{ top: 20, right: 12, left: 12 }}>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} />
