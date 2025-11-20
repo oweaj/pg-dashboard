@@ -10,7 +10,7 @@ export function SectionCards({ data }: { data: IPaymentListType[] }) {
   const total = data.reduce((sum, item) => sum + Number(item.amount), 0);
 
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 md:grid-cols-3 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
+    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 md:grid-cols-3 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @5xl/main:grid-cols-3">
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>총 매출</CardDescription>
