@@ -14,6 +14,7 @@ import TableModal from "@/components/modal-table";
 import MerchantDetail from "@/app/_components/MerchantDetail";
 import { useFilterAddAll } from "@/hooks/useFilterAddAll";
 
+// 가맹점 리스트 컴포넌트
 const TableMerchant = () => {
   const { data: merchantList } = useMerchantList();
   const { data: merchantDetail } = useMerchantDetail();
@@ -109,7 +110,7 @@ const TableMerchant = () => {
 
   return (
     <div className="px-4 lg:px-6">
-      <div className="flex items-end gap-3 text-xl font-semibold mb-4">
+      <div className="flex items-end gap-3 text-xl font-semibold">
         <h2>전체 가맹점 목록</h2>
         <span className="text-base text-gray-600">총 {merchantList.data.length ?? 0}개</span>
       </div>

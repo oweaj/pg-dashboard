@@ -6,6 +6,7 @@ interface SortButtonProps<TData, TValue> {
   column: Column<TData, TValue>;
 }
 
+// 테이블 별 정렬 토글
 const TableSortButton = <TData, TValue>({ column }: SortButtonProps<TData, TValue>) => {
   const sorted = column.getIsSorted();
 

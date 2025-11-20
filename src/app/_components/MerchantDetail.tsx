@@ -6,6 +6,7 @@ import TableStatusBadge from "../payment/_components/TableStatusBadge";
 import type { ReactNode } from "react";
 import type { IMerchantDetailType } from "@/types/merchant.type";
 
+// 가맹점 코드 상세 컴포넌트
 const MerchantDetail = ({
   mchtSelect,
   data,
@@ -61,12 +62,17 @@ const MerchantDetail = ({
         </section>
       </div>
       <div className="flex justify-between">
-        <Button size="lg" onClick={() => alert("준비중 입니다.")}>
-          승인
-        </Button>
         <div className="flex gap-4">
+          <Button size="lg" className="bg-red-500 hover:bg-red-400" onClick={() => alert("준비중 입니다.")}>
+            삭제
+          </Button>
           <Button size="lg" onClick={() => alert("준비중 입니다.")}>
             수정
+          </Button>
+        </div>
+        <div className="flex gap-4">
+          <Button size="lg" onClick={() => alert("준비중 입니다.")}>
+            승인
           </Button>
           <Button variant="outline" size="lg" onClick={() => setModalOpen(false)}>
             닫기

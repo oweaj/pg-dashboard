@@ -15,6 +15,7 @@ import TableModal from "@/components/modal-table";
 import MerchantDetail from "@/app/_components/MerchantDetail";
 import { useFilterAddAll } from "@/hooks/useFilterAddAll";
 
+// 거래내역 리스트 컴포넌트
 const TablePayment = () => {
   const { data: paymentList } = usePaymentList();
   const { data: paymentType } = usePaymentType();
@@ -121,7 +122,7 @@ const TablePayment = () => {
 
   return (
     <div className="px-4 lg:px-6">
-      <div className="flex items-end gap-3 text-xl font-semibold mb-4">
+      <div className="flex items-end gap-3 text-xl font-semibold">
         <h2>전체 거래내역</h2>
         <span className="text-base text-gray-600">총 {paymentList.data.length ?? 0}건</span>
       </div>

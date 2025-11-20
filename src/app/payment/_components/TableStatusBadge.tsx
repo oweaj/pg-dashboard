@@ -46,6 +46,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
+// 테이블 별 상태 뱃지
 const TableStatusBadge = ({ status }: { status: string }) => {
   const { icon, description } = getStatusColor(status);
 
