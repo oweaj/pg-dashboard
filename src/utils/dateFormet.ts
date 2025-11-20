@@ -7,11 +7,12 @@ interface IDateFormatOption {
 }
 
 export const dateFormat = (date: Date | string, option?: IDateFormatOption) => {
-  if (typeof date === "string") new Date(date);
+  const checkDate = typeof date === "string" ? new Date(date) : date;
+  if (Number.isNaN(checkDate.getTime())) return "-";
 
   let formatDate = "yyyy.MM.dd ";
   if (option?.day) formatDate += "EEEE";
   else if (option?.time) formatDate += "/ a hh:mm";
 
-  return format(date, formatDate, { locale: ko });
+  return format(checkDate, formatDate, { locale: ko });
 };
