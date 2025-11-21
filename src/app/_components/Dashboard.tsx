@@ -34,8 +34,6 @@ const DashBoard = () => {
     }
   );
 
-  if (!data || !paymentType || !merchantDetail) return null;
-
   const mchtTypeChart = getMerchantTypeCount.map((data, i) => ({
     browser: data.label,
     visitors: data.count,
@@ -67,10 +65,10 @@ const DashBoard = () => {
   return (
     <div className="@container/main flex flex-1 flex-col gap-2">
       <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6">
-        <SectionCards data={data.data} />
+        <SectionCards data={data?.data} />
         <div className="flex flex-col gap-4 md:flex-row">
-          <ChartAreaInteractive data={data.data} />
-          <TotalRank data={data.data} />
+          <ChartAreaInteractive data={data?.data ?? []} />
+          <TotalRank data={data?.data ?? []} />
         </div>
         <div className="flex flex-col gap-4 md:flex-row">
           <ChartPieLabel chartData={mchtTypeChart} chartConfig={mchtTypeChartConfig} title="유형 별 거래 건수" />

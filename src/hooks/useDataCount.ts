@@ -7,15 +7,15 @@ export const useDataCount = <T>(
 ) => {
   return useMemo(() => {
     const result: { value: string; label: string; count: number }[] = [];
-    data?.forEach((item) => {
-      const checkData = value(item) || "기타";
+    data?.forEach((item, i) => {
+      const checkData = value(item) || "알수없음";
       const current = result.find((data) => data.value === checkData);
       if (current) {
         current.count += 1;
       } else {
         result.push({
           value: checkData,
-          label: label?.(item) || "기타",
+          label: label?.(item) || `기타-${i}`,
           count: 1,
         });
       }

@@ -10,7 +10,7 @@ import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { useMobile } from "@/hooks/useMobile";
 
-export function ChartAreaInteractive({ data }: { data: IPaymentListType[] }) {
+export function ChartAreaInteractive({ data = [] }: { data: IPaymentListType[] }) {
   const isMobile = useMobile();
   const [timeRange, setTimeRange] = useState("week");
   const chartData = chartDataFilter(data, timeRange);
