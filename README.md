@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+#### 실행 방법
 
-## Getting Started
+```
+1. 저장소 복제
+git clone https://github.com/oweaj/pg-dashboard.git
 
-First, run the development server:
+2. 종속성 설치
+npm install
 
-```bash
+3. 프로젝트 실행
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+< 환경변수 >
+NEXT_PUBLIC_BASE_URL=https://recruit.paysbypays.com/api/v1
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### 설명
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+- 사용한 템플릿/라이브러리 : Shadcn/ui
+- [차트 테이블 대시보드](https://ui.shadcn.com/blocks)
 
-To learn more about Next.js, take a look at the following resources:
+프로젝트에서는 Shadcn/ui의 대시보드 템플릿을 기반으로 초기 레이아웃을 잡았습니다.
+대시보드의 기본 레이아웃 구조는 그대로 사용하면서 필요에 따라 차트, 모달, 캘린더 등 ui와 기능을 커스터마이징했습니다.
+이렇게 하면 대시보드 구조를 빠르게 구축하면서 필요한 부분 하나씩 가져가며 불필요한 부분은 제거하거나 수정하면서 프로젝트 요구사항에 맞춰 유연하게 조정할 수 있어서 대시보드 템플릿을 활용했습니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### 사용한 기술 및 라이브러리
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js, Typescript, Tanstack-Query, Tailwindcss, Shadcn/ui
