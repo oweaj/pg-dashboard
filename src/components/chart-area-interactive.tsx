@@ -4,7 +4,7 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
-import chartDataFilter from "@/utils/chartData";
+import useDataChart from "@/hooks/useDataChart";
 import type { IPaymentListType } from "@/types/payment.type";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
@@ -13,7 +13,7 @@ import { useMobile } from "@/hooks/useMobile";
 export function ChartAreaInteractive({ data = [] }: { data: IPaymentListType[] }) {
   const isMobile = useMobile();
   const [timeRange, setTimeRange] = useState("week");
-  const chartData = chartDataFilter(data, timeRange);
+  const chartData = useDataChart(data, timeRange);
 
   useEffect(() => {
     if (isMobile) {
