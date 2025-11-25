@@ -1,5 +1,11 @@
 import { Badge } from "@/components/ui/badge";
-import { IconCircleCheckFilled, IconCircleXFilled, IconExclamationCircleFilled, IconLoader } from "@tabler/icons-react";
+import {
+  IconCircleCheckFilled,
+  IconCircleXFilled,
+  IconExclamationCircleFilled,
+  IconCircleHalfVertical,
+  IconLoader,
+} from "@tabler/icons-react";
 
 const getStatusColor = (status: string) => {
   switch (status) {
@@ -7,7 +13,11 @@ const getStatusColor = (status: string) => {
     case "ACTIVE":
       return {
         icon: (
-          <IconCircleCheckFilled style={{ width: 16, height: 16 }} className="fill-green-500 dark:fill-green-400" />
+          <IconCircleCheckFilled
+            data-testid="check-state-icon"
+            style={{ width: 16, height: 16 }}
+            className="fill-green-500 dark:fill-green-400"
+          />
         ),
         description: status === "SUCCESS" ? "결제완료" : "활성",
       };
@@ -15,7 +25,13 @@ const getStatusColor = (status: string) => {
     case "FAILED":
     case "CLOSED":
       return {
-        icon: <IconCircleXFilled style={{ width: 16, height: 16 }} className="fill-red-500 dark:fill-red-400" />,
+        icon: (
+          <IconCircleXFilled
+            data-testid="reject-state-icon"
+            style={{ width: 16, height: 16 }}
+            className="fill-red-500 dark:fill-red-400"
+          />
+        ),
         description: status === "FAILED" ? "결제실패" : "폐기",
       };
 
@@ -24,6 +40,7 @@ const getStatusColor = (status: string) => {
       return {
         icon: (
           <IconExclamationCircleFilled
+            data-testid="warn-state-icon"
             style={{ width: 16, height: 16 }}
             className="fill-yellow-500 dark:fill-yellow-400"
           />
@@ -34,13 +51,13 @@ const getStatusColor = (status: string) => {
     case "PENDING":
     case "READY":
       return {
-        icon: <IconLoader style={{ width: 16, height: 16 }} />,
+        icon: <IconLoader data-testid="wait-state-icon" style={{ width: 16, height: 16 }} />,
         description: status === "PENDING" ? "결제대기" : "대기",
       };
 
     default:
       return {
-        icon: <IconLoader style={{ width: 16, height: 16 }} />,
+        icon: <IconCircleHalfVertical data-testid="default-state-icon" style={{ width: 16, height: 16 }} />,
         description: "알수없음",
       };
   }

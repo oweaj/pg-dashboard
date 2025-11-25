@@ -22,9 +22,9 @@ const TableSortButton = <TData, TValue>({ column }: SortButtonProps<TData, TValu
 
   return (
     <Button variant="ghost" size="icon-sm" className="w-6 h-6 hover:border-2" onClick={handleSort}>
-      {sorted === "asc" && <IconArrowNarrowUp className="w-3.5 h-3.5 text-gray-500" />}
-      {sorted === "desc" && <IconArrowNarrowDown className="w-3.5 h-3.5 text-gray-500" />}
-      {!sorted && <IconArrowsSort className="w-3.5 h-3.5 text-gray-500" />}
+      {sorted === "asc" && <IconArrowNarrowUp data-testid="asc-sort-icon" className="w-3.5 h-3.5 text-gray-500" />}
+      {sorted === "desc" && <IconArrowNarrowDown data-testid="desc-sort-icon" className="w-3.5 h-3.5 text-gray-500" />}
+      {!sorted && <IconArrowsSort data-testid="default-sort-icon" className="w-3.5 h-3.5 text-gray-500" />}
     </Button>
   );
 };
