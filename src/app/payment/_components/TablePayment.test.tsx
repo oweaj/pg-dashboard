@@ -23,10 +23,6 @@ jest.mock("@/hooks/useMerchant", () => ({
   useMerchantDetail: jest.fn(),
 }));
 
-jest.mock("@/hooks/useFilterAddAll", () => ({
-  useFilterAddAll: jest.fn((data, mapper) => (data ? [{ value: "all", label: "전체" }, ...data.map(mapper)] : [])),
-}));
-
 describe("거래내역 테이블 컴포넌트", () => {
   beforeEach(() => {
     jest.clearAllMocks();
