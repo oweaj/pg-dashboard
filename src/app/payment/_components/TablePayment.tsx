@@ -65,6 +65,7 @@ const TablePayment = () => {
                 setSelectedMerchant(row.original.mchtCode);
                 setModalOpen(true);
               }}
+              data-testid={`${row.original.mchtCode}-modal-button`}
             >
               {merchantName}
             </Button>
