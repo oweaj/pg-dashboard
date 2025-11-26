@@ -40,6 +40,15 @@ export const mockPaymentStatus = {
   ],
 };
 
+export const mockMerchantStatus = {
+  data: [
+    { code: "ACTIVE", description: "활성" },
+    { code: "CLOSED", description: "폐기" },
+    { code: "INACTIVE", description: "중지" },
+    { code: "READY", description: "대기" },
+  ],
+};
+
 export const mockMerchantList = {
   data: [
     { bizType: "CAFE", mchtCode: "MCHT-TEST-001", mchtName: "테스트 가맹점A", status: "ACTIVE" },
